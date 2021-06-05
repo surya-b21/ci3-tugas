@@ -1,3 +1,10 @@
+<nav class="navbar navbar-light bg-light">
+	<a class="navbar-brand" href="<?= site_url('hotel/index') ?>">Dashboard Admin</a>
+	<div class="form-inline">
+		<?= ucfirst($this->session->userdata('username')); ?>
+		<a class="nav-link" href="<?= site_url('loginhotel/logout') ?>">Logout</a>
+	</div>
+</nav>
 <div class="container-md mt-5">
 	<h1 class="display-4 text-center">Data Kamar</h1>
 	<?php if ($this->session->flashdata('status')) : ?>
