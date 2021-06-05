@@ -1,7 +1,13 @@
 <nav class="navbar navbar-light bg-light">
-	<a class="navbar-brand" href="<?= site_url('hotel/index') ?>">Dashboard Admin</a>
-	<div class="form-inline">
-		<?= ucfirst($this->session->userdata('username')); ?>
+	<ul class="navbar-nav ml-auto">
+		<li class="nav-item">
+			<?= ucfirst($this->session->userdata('username')); ?>
+		</li>
+	</ul>
+	<div class="container justify-content-center">
+		<a class="navbar-brand" href="<?= site_url('hotel/index') ?>">Dashboard Admin</a>
+	</div>
+	<div class="form-inline mr-auto">
 		<a class="nav-link" href="<?= site_url('loginhotel/logout') ?>">Logout</a>
 	</div>
 </nav>

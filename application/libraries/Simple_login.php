@@ -35,7 +35,7 @@ class Simple_login
 	{
 
 		//cek username dan password
-		$query = $this->CI->db->get_where('adminhotel', array('username' => $username, 'password' => $password));
+		$query = $this->CI->db->get_where('adminhotel', array('username' => $username, 'password' => md5($password)));
 
 		if ($query->num_rows() == 1) {
 			//ambil data user berdasar username
