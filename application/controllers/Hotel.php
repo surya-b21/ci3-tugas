@@ -6,7 +6,7 @@ class Hotel extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
-		$this->load->model('HotelModel');
+		$this->load->model(array('HotelModel', 'RefJenisModel'));;
 		$this->load->library('form_validation');
 		$this->load->database();
 		$this->load->library('session');
@@ -14,30 +14,30 @@ class Hotel extends CI_Controller
 
 	public function index()
 	{
-		$data['hotel'] = $this->HotelModel->getAllData();
+		$data['hotel'] = $this->HotelModel->getJoinTable();
 		$data['judul'] = 'Landing Page';
-		$this->load->view('templates/header',$data);
-		$this->load->view('hotel/index',$data);
+		$this->load->view('templates/header', $data);
+		$this->load->view('hotel/index', $data);
 		$this->load->view('templates/footer');
 	}
-	public function form()
-	{
-		$this->form_validation->set_rules('harga', 'Harga', 'required');
-		$this->form_validation->set_rules('tersedia', 'Kamar Tersedia', 'required');
-		$this->form_validation->set_rules('terisi', 'Kamar Terisi', 'required');
-		$this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
 
+	public function tampilForm()
+	{
+		$data['ref'] = $this->RefJenisModel->getAllData();
 		$data['judul'] = 'Tambah Data';
 
+		$this->form_validation->set_rules('nama', 'Nama', 'required|regex_match[/^[a-zA-Z]/]', array('required' => '<span style="color:red">Silahkan isi field Nama</span>', 'regex_match' => '<span style="color:red">Format nama salah</span>'));
+		$this->form_validation->set_rules('lamainap', 'Lama Inap', 'required', array('required' => '<span style="color:red">Kolom Lama Inap tidak boleh kosong</span>'));
+
 		if ($this->form_validation->run() == FALSE) {
-			$this->session->set_flashdata('status', 'Data gagal di Submit');
-			redirect('hotel/index');
+			$this->load->view('templates/header', $data);
+			$this->load->view('hotel/form', $data);
+			$this->load->view('templates/footer');
 		} else {
 			$data = array(
 				'nama' => $this->input->post('nama'),
-				'harga' => $this->input->post('harga'),
-				'tersedia' => $this->input->post('tersedia'),
-				'terisi' => $this->input->post('terisi'),
+				'idJenis' => $this->input->post('idJenis'),
+				'lamainap' => $this->input->post('lamainap'),
 				'keterangan' => $this->input->post('keterangan')
 			);
 			$this->HotelModel->inputData($data);
@@ -46,30 +46,33 @@ class Hotel extends CI_Controller
 		}
 	}
 
-	public function hapus($id) 
+	public function hapus($id)
 	{
 		$this->HotelModel->hapus($id);
 		$this->session->set_flashdata('status', 'Data berhasil dihapus');
 		redirect('hotel/index');
 	}
 
-	public function update()
+	public function update($id)
 	{
-		$this->form_validation->set_rules('harga', 'Harga', 'required');
-		$this->form_validation->set_rules('tersedia', 'Kamar Tersedia', 'required');
-		$this->form_validation->set_rules('terisi', 'Kamar Terisi', 'required');
-		$this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
+		$data['single'] = $this->HotelModel->getData($id);
+		$data['ref'] = $this->RefJenisModel->getAllData();
+		$data['judul'] = "Update Data";
+
+		$this->form_validation->set_rules('nama', 'Nama', 'required|regex_match[/^[a-zA-Z]/]', array('required' => '<span style="color:red">Silahkan isi field Nama</span>', 'regex_match' => '<span style="color:red">Format nama salah</span>'));
+		$this->form_validation->set_rules('lamainap', 'Lama Inap', 'required', array('required' => '<span style="color:red">Kolom Lama Inap tidak boleh kosong</span>'));
 
 		if ($this->form_validation->run() == FALSE) {
-			redirect('hotel/index');
+			$this->load->view('templates/header', $data);
+			$this->load->view('hotel/edit', $data);
+			$this->load->view('templates/footer');
 		} else {
 			$data = array(
-				'id' => $this->input->post('id'),
 				'nama' => $this->input->post('nama'),
-				'harga' => $this->input->post('harga'),
-				'tersedia' => $this->input->post('tersedia'),
-				'terisi' => $this->input->post('terisi'),
-				'keterangan' => $this->input->post('keterangan')
+				'idJenis' => $this->input->post('idJenis'),
+				'lamainap' => $this->input->post('lamainap'),
+				'keterangan' => $this->input->post('keterangan'),
+				'id' => $this->input->post('id')
 			);
 			$this->HotelModel->updateData($data);
 			$this->session->set_flashdata('status', 'Data berhasil diupdate');

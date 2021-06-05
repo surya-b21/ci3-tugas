@@ -2,10 +2,10 @@
 
 class HotelModel extends CI_Model
 {
+	public $id;
 	public $nama;
-	public $harga;
-	public $tersedia;
-	public $terisi;
+	public $idJenis;
+	public $inap;
 	public $keterangan;
 
 	public function inputData($data)
@@ -19,6 +19,15 @@ class HotelModel extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getJoinTable()
+	{
+		$this->db->select('*');
+		$this->db->from('hotel');
+		$this->db->join('refjenishotel', 'hotel.idJenis = refjenishotel.kode');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	public function hapus($id)
 	{
 		$this->db->where('id', $id);
@@ -29,5 +38,12 @@ class HotelModel extends CI_Model
 	{
 		$this->db->where('id', $data['id']);
 		$this->db->update('hotel', $data);
+	}
+
+	public function getData($id)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->get('hotel');
+		return $query->row();
 	}
 }
