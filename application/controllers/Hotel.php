@@ -12,7 +12,8 @@ class Hotel extends CI_Controller
 	public function index()
 	{
 		$data['hotel'] = $this->HotelModel->getJoinTable();
-		$data['judul'] = 'Landing Page';
+		$data['ref'] = $this->RefJenisModel->getAllData();
+		$data['judul'] = 'Dashboard';
 		$this->load->view('templates/header', $data);
 		$this->load->view('hotel/index', $data);
 		$this->load->view('templates/footer');
@@ -75,5 +76,10 @@ class Hotel extends CI_Controller
 			$this->session->set_flashdata('status', 'Data berhasil diupdate');
 			redirect('hotel/index');
 		}
+	}
+
+	public function encodeData()
+	{
+		echo json_encode($this->HotelModel->getData($_POST['id']));
 	}
 }
