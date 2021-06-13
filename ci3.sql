@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 05, 2021 at 04:37 AM
+-- Generation Time: Jun 13, 2021 at 03:35 AM
 -- Server version: 10.5.9-MariaDB-log
 -- PHP Version: 7.4.16
 
@@ -38,7 +38,7 @@ CREATE TABLE `adminhotel` (
 --
 
 INSERT INTO `adminhotel` (`id`, `username`, `password`) VALUES
-(1, 'admin1', '12345');
+(1, 'admin1', '827ccb0eea8a706c4c34a16891f84e7b');
 
 -- --------------------------------------------------------
 
